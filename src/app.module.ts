@@ -2,6 +2,9 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigValidationSchema } from './config.schema';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
+import { DataSource } from 'typeorm';
 
 @Module({
   imports: [
@@ -24,9 +27,13 @@ import { ConfigValidationSchema } from './config.schema';
         entities: ['dist/**/*.entity{.ts,.js}'],
         migrations: ['dist/migrations/*{.ts, .js}'],
       })
-    })
+    }),
+    UsersModule,
+    AuthModule
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  constructor (private dataSource: DataSource) {}
+}
